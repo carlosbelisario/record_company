@@ -1,0 +1,5 @@
+{
+    "require": {
+        "lord/laroute": "^2.2"
+    }
+}

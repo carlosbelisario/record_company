@@ -1,0 +1,34 @@
+<div ng-controller="AlbumListCtrl">
+    <a href="#/album/add">add</a>
+    <div ng-if="filteredAlbums.length">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha de Publicación</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="album in filteredAlbums">
+                <td>[[ album.title ]]</td>
+                <td>[[ album.published | date : 'dd/MM/yyyy']]</td>
+                <td>
+                    <a href="#/album/edit/[[album.id]]">editar</a>
+                    <a href="#/album/detail/[[album.id]]">details</a>
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage"
+                    ng-model="currentPage" ng-change="pageChanged()"></uib-pagination>
+        <p>
+            Total items: [[totalItems]]<br />
+            Items per page: [[itemsPerPage]]<br />
+            Current Page: [[currentPage]]
+        </p>
+    </div>
+    <div ng-if="filteredAlbums.length == 0" class="well">
+       Aun no existen Albunes registrados
+    </div>
+</div>
