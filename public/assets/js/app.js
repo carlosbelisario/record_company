@@ -8,21 +8,21 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'n
         //routing
         $routeProvider.
             when('/', {
-                templateUrl: '../../public/app/partials/album/list.html',
+                templateUrl: '../public/app/partials/album/list.html',
                 controller: 'AlbumListCtrl'
             }).
             when('/album', {
-                templateUrl: '../../public/app/partials/album/list.html',
+                templateUrl: '../public/app/partials/album/list.html',
                 controller: 'AlbumListCtrl'
             }).
             when('/album/add', {
-                templateUrl: '../../public/app/partials/album/add.html',
+                templateUrl: '../public/app/partials/album/add.html',
                 controller: 'AlbumAddCtrl'
             }).when('/album/edit/:id', {
-                templateUrl: '../../public/app/partials/album/edit.html',
+                templateUrl: '../public/app/partials/album/edit.html',
                 controller: 'AlbumEditCtrl'
             }).when('/album/detail/:id', {
-                templateUrl: '../../public/app/partials/album/details.html',
+                templateUrl: '../public/app/partials/album/details.html',
                 controller: 'AlbumEditCtrl'
             }).otherwise({
                 redirectTo: '/album'
