@@ -1,10 +1,10 @@
 ## Instalación
 
 Clonar el repositiorio en la carpeta destinada normalmente /var/www/html en servidores linux con apache, utilizando 
-    git clone https://github.com/carlosbelisario/record_company.git
+    `git clone https://github.com/carlosbelisario/record_company.git`
 
 una vez clonado el repositorio instalar las dependencias mediante el comando
-    composer install 
+    `composer install` 
 
 en la raiz de la aplicacion se encuentra un archivo llamado bd.sql, subiendo este respaldo a la db mediante cualquier cliente (mysqlworkbench, phpmyadmin, navicat, etc) que creara la estructura y los datos de pruebas necesarios para el funcionamiento de la app, en posteriores versiones se usarán las migraciones de laravel (el deber ser de la instalación)
 
