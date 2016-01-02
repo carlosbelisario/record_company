@@ -21,6 +21,8 @@ Route::post('/albums/create', ['as' => 'create', 'uses' => 'AlbumController@add'
 
 Route::put('/albums/edit/{id}', ['as' => 'edit', 'uses' => 'AlbumController@update']);
 
+Route::delete('/albums/delete/{id}', ['as' => 'delete', 'uses' => 'AlbumController@delete']);
+
 Route::get('/albums/detail/{id}', ['as' => 'detail', 'uses' => 'AlbumController@detail']);
 
 

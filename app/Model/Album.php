@@ -35,7 +35,7 @@ class Album extends Model
      * validation rules
      * @var array
      */
-    public static $rules = ['title' => 'required', 'published' => 'required'];
+    public static $rules = ['title' => 'required', 'published' => 'required|date', 'author' => 'required'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

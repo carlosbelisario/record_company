@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Model\Artist;
 use App\Model\Album;
 
+use Illuminate\Foundation\Validation\ValidationException;
+
 /**
  *
  * Class AlbumController
@@ -26,6 +28,7 @@ class AlbumController extends Controller
     }
 
     /**
+     *
      * create a new album
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -33,13 +36,17 @@ class AlbumController extends Controller
     public function add(Request $request)
     {
         try {
+            $this->validate($request, Album::$rules);
             $input = $request->all();
             $album = new Album($input);
             $artists = Artist::whereIn('id', $input['author'])->get();
             $album->save();
             $album->artist()->saveMany($artists);
             return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
+        } catch(ValidationException $e) {
+            return response()->json(['status' => 'validation_error', 'messages' => $e->validator->errors()]);
+        }
+        catch (\Exception $e) {
             return response()->json(['status' => 'server_error', 'message' => $e->getMessage()]);
         }
     }
@@ -55,14 +62,21 @@ class AlbumController extends Controller
         if (!$album) {
             return response()->json(['status' => 'error', 'message' => 'album no encontrado']);
         }
-        $input = $request->all();
-        $album->title = $input['title'];
-        $album->published = $input['published'];
-        $artists = Artist::whereIn('id', $input['author'])->get();
-        $album->save();
-        $album->artist()->saveMany($artists);
-
-        return response()->json(['status' => 'success']);
+        try {
+            $this->validate($request, Album::$rules);
+            $input = $request->all();
+            $album->title = $input['title'];
+            $album->published = $input['published'];
+            $artists = Artist::whereIn('id', $input['author'])->get();
+            $album->save();
+            $album->artist()->saveMany($artists);
+            return response()->json(['status' => 'success']);
+        } catch(ValidationException $e) {
+            return response()->json(['status' => 'validation_error', 'messages' => $e->validator->errors()]);
+        }
+        catch (\Exception $e) {
+            return response()->json(['status' => 'server_error', 'message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -74,8 +88,20 @@ class AlbumController extends Controller
     public function detail($id)
     {
         $album = Album::with('Artist', 'Artist.Roles')->find($id);
-        //$album->load('Artist')->load('');
-
         return response()->json($album);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete($id) {
+        $album = Album::with('Artist')->find($id);
+
+        if ($album->dmelete()) {
+            return response()->json(['status' => 'success']);
+        } else {
+            return response()->json(['error' => 'error', 'message' => 'no se pudo eliminar el album']);
+        }
     }
 } 

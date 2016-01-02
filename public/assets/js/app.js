@@ -68,6 +68,7 @@ myApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', function
 myApp.controller('AlbumEditCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'flash',
     'listArtistsFactory',
     function($scope, $rootScope, $http, $routeParams, $location, flash, listArtistsFactory) {
+        $scope.allowDelete = false;
         $rootScope.flash = flash;
         $scope.artistsList = listArtistsFactory.query();
         $http.get(laroute.url('albums/detail', [$routeParams.id])).success(function(data) {
@@ -99,11 +100,15 @@ myApp.controller('AlbumEditCtrl', ['$scope', '$rootScope', '$http', '$routeParam
         $scope.addNewArtist = function() {
             var newItemNo = $scope.artists.length+1;
             $scope.artists.push({'id':'choice'+newItemNo});
+            $scope.allowDelete = true;
         };
 
         $scope.removeArtist = function() {
             var lastItem = $scope.artists.length-1;
             $scope.artists.splice(lastItem);
+            if (lastItem == 1) {
+                $scope.allowDelete = false;
+            }
         };
 
         //datepicker
@@ -140,10 +145,13 @@ myApp.controller('AlbumEditCtrl', ['$scope', '$rootScope', '$http', '$routeParam
 
 myApp.controller('AlbumAddCtrl', ['$scope', '$rootScope', '$http', '$location', 'flash', 'listArtistsFactory',
     function($scope, $rootScope, $http, $location, flash, listArtistsFactory) {
+    $scope.album = {}
+    $scope.allowDelete = false;
     $rootScope.flash = flash;
     $scope.artistsList = listArtistsFactory.query();
 
     $scope.add = function(album) {
+        console.log(album);
         $http.post(
             laroute.url('albums/create', []),
             album
@@ -152,6 +160,8 @@ myApp.controller('AlbumAddCtrl', ['$scope', '$rootScope', '$http', '$location', 
             if (data.status == 'success') {
                 $scope.flash.set({type:'success', 'message':'Album agregado correctamente'});
                 $location.path('/album');
+            } else if (data.status == 'validation_error') {
+                $scope.error = data.messages;
             }
         }).error(function(error) {
            console.log(error);
@@ -164,10 +174,15 @@ myApp.controller('AlbumAddCtrl', ['$scope', '$rootScope', '$http', '$location', 
     $scope.addNewArtist = function() {
         var newItemNo = $scope.artists.length+1;
         $scope.artists.push({'id':'choice'+newItemNo});
+        $scope.allowDelete = true;
     };
 
     $scope.removeArtist = function() {
         var lastItem = $scope.artists.length-1;
+        console.log(lastItem);
+        if (lastItem == 1) {
+            $scope.allowDelete = false;
+        }
         $scope.artists.splice(lastItem);
     };
 

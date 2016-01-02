@@ -1,45 +1,10 @@
 <div ng-controller="AlbumAddCtrl">
-    <h2>Nuevo Album</h2>
-    <div class="row">
+    <h3>Nuevo</h3>
+    <div class="row well">
         <form novalidate class="simple-form" name="form">
-            <div class="form-group">
-                <label>Titulo</label>
-                <input type="text" ng-model="album.title" name="title" required class="form-control" />
-                <div ng-messages="form.title.$error" style="color:maroon" role="alert" ng-if="form.title.$touched">
-                    <div ng-message="required">Debe de indicar un título</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Fecha de Publicación</label>
-                <p class="input-group">
-                    <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" ng-model="album.published" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span>
-                </p>
-                <div ng-messages="form.title.$error" style="color:maroon" role="alert" ng-if="form.published.$touched">
-                    <div ng-message="required">Debe seleccionar una fecha</div>
-                </div>
-            </div>
-            <fieldset>
-                <h3>Artistas</h3>
-                <div>
-                    <button type="button" class="btn btn-default" ng-click="addNewArtist()" title="agregar artista">
-                        <i class="glyphicon glyphicon-plus"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger" ng-click="removeArtist()" title="Eliminar">
-                        <i class="glyphicon glyphicon-minus"></i>
-                    </button>
-                </div>
-                <br />
-                <div class="form-group" data-ng-repeat="(index, artist) in artists">
-                    <p class="input-group">
-                        <select ng-model="album.author[ [[index]]]" name="author[]" ng-options="i.id as i.name for i in artistsList" class="form-control"></select>
-                    </p>
-                </div>
-            </fieldset>
-            <input type="submit" ng-click="add(album)" class="btn btn-primary" value="Guardar" ng-disabled="album.title.$dirty && album.title.$invalid ||
-      album.published.$dirty && album.published.$invalid" />
+            <ng-include src="'app/partials/album/form.html'"></ng-include>
+            <input type="submit" ng-click="add(album)" class="btn btn-primary" value="Guardar" ng-disabled="form.title.$invalid
+            || form.published.$invalid" />
         </form>
     </div>
 </div>
