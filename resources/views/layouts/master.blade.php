@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#/">Discografía</a>
+                  <a class="navbar-brand" href="{{ URL::route('index') }}">Discografía</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,5 +45,10 @@
         <div class="container">
             @yield('content')
         </div>
+        @section('footer')
+            <div class="page-footer" style="text-align: center">
+                &copy; 2016 Compañia Discográfica todos los derechos reservados
+            </div>
+        @show
     </body>
 </html>

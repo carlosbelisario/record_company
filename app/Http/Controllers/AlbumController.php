@@ -17,6 +17,10 @@ use Illuminate\Foundation\Validation\ValidationException;
  */
 class AlbumController extends Controller
 {
+    public function index()
+    {
+        return view('album/index');
+    }
     /**
      * return the list of albums
      * @return \Illuminate\Http\JsonResponse
@@ -39,6 +43,7 @@ class AlbumController extends Controller
             $this->validate($request, Album::$rules);
             $input = $request->all();
             $album = new Album($input);
+
             $artists = Artist::whereIn('id', $input['author'])->get();
             $album->save();
             $album->artist()->saveMany($artists);
@@ -98,10 +103,21 @@ class AlbumController extends Controller
     public function delete($id) {
         $album = Album::with('Artist')->find($id);
 
-        if ($album->dmelete()) {
+        if ($album->delete()) {
             return response()->json(['status' => 'success']);
         } else {
             return response()->json(['error' => 'error', 'message' => 'no se pudo eliminar el album']);
         }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function roleDelete($id, $artist) {
+        $album = Album::with('Artist')->find($id);
+        $album->artist()->detach($artist);
+        $artist->save();
+        return response()->json(['status' => 'success']);
     }
 } 

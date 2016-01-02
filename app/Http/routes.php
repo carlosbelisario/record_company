@@ -12,10 +12,14 @@
 */
 
 Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
+Route::get('/app', ['as' => 'app', 'uses' => 'MainController@app']);
 
-Route::get('/artist', ['as' => 'artist', 'uses' => 'ArtistController@artistList']);
+/**
+ * album routes
+ */
+Route::get('/albums', ['as' => 'albums', 'uses' => 'AlbumController@index']);
 
-Route::get('/albums', ['as' => 'albums', 'uses' => 'AlbumController@albumList']);
+Route::get('/albums/list', ['as' => 'list', 'uses' => 'AlbumController@albumList']);
 
 Route::post('/albums/create', ['as' => 'create', 'uses' => 'AlbumController@add']);
 
@@ -25,7 +29,30 @@ Route::delete('/albums/delete/{id}', ['as' => 'delete', 'uses' => 'AlbumControll
 
 Route::get('/albums/detail/{id}', ['as' => 'detail', 'uses' => 'AlbumController@detail']);
 
+Route::get('/albums/artist/delete/{id}/{artist}', ['as' => 'album_artist_delelete', 'uses' => 'ArtistController@roleDelete']);
 
+/**
+ * artist routes
+ */
+Route::get('/artists', ['as' => 'artists', 'uses' => 'ArtistController@index']);
+
+Route::get('/artists/list', ['as' => 'artists_list', 'uses' => 'ArtistController@artistList']);
+
+Route::post('/artists/create', ['as' => 'artists_create', 'uses' => 'ArtistController@add']);
+
+Route::put('/artists/edit/{id}', ['as' => 'artists_edit', 'uses' => 'ArtistController@update']);
+
+Route::delete('/artists/delete/{id}', ['as' => 'artists_delete', 'uses' => 'ArtistController@delete']);
+
+Route::get('/artists/detail/{id}', ['as' => 'artists_detail', 'uses' => 'ArtistController@detail']);
+
+Route::get('/artists/role/delete/{id}/{role}', ['as' => 'artists_role_delelete', 'uses' => 'ArtistController@roleDelete']);
+
+/**
+ * roles routes
+ */
+
+Route::get('/roles/list', ['as' => 'roles_list', 'uses' => 'RolesController@rolesList']);
 
 /*
 |--------------------------------------------------------------------------

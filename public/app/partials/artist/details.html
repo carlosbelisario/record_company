@@ -1,0 +1,50 @@
+<div ng-controller="ArtistDetailCtrl">
+    <div class="row">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Datos del Artista</div>
+            <div>
+                Nombre: [[ artist.name ]]
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Roles</div>
+
+            <!-- Table -->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="roles in artist.roles">
+                    <td>[[ roles.rol ]]</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Abums</div>
+
+            <!-- Table -->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Fecha de Publicacion</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="album in artist.album">
+                    <td>[[ album.title]]</td>
+                    <td>[[ album.published | date : 'dd/MM/yyyy']]</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

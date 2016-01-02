@@ -2,8 +2,8 @@
     <h3>Editar</h3>
     <div class="row well">
         <form novalidate class="simple-form" name="form">
-            <ng-include src="'app/partials/album/form.html'"></ng-include>
-    <input type="submit" ng-click="edit(album)" class="btn btn-primary" value="Guardar" ng-disabled="form.title.$invalid
+            <ng-include src="'../app/partials/album/form.html'"></ng-include>
+            <input type="submit" ng-click="edit(album)" class="btn btn-primary" value="Guardar" ng-disabled="form.title.$invalid
             || form.published.$invalid" />
         </form>
     </div>

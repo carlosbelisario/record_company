@@ -1,0 +1,29 @@
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" ng-model="artist.name" name="name" required class="form-control" />
+            <div ng-messages="form.name.$error" style="color:maroon" role="alert" ng-if="form.name.$touched">
+                <div ng-message="required">El campo Nombre es obligatorio</div>
+            </div>
+            <div ng-repeat="error in error.title" ng-ig="error.title != undefined">
+                <div style="color:maroon" role="alert">[[ error ]]</div>
+            </div>
+
+        </div>
+        <fieldset>
+            <h3>Roles</h3>
+            <div>
+                <button type="button" class="btn btn-default" ng-click="addNewRole()" title="Agregar Role">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger" ng-click="removeRole()" title="Eliminar Role" ng-show="allowDelete">
+                    <i class="glyphicon glyphicon-minus"></i>
+                </button>
+            </div>
+            <br />
+            <div ng-repeat="error in error.author" ng-ig="error.author != undefined">
+                <div style="color:maroon" role="alert">[[ error ]]</div>
+            </div>
+            <div class="form-group" data-ng-repeat="(index, role) in roles">
+                <select ng-model="artist.rol[ [[index]]]" required name="rol[]" ng-options="i.id as i.rol for i in roleList" class="form-control"></select>
+            </div>
+        </fieldset>
