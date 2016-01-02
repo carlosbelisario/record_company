@@ -1,5 +1,7 @@
 <div ng-controller="AlbumListCtrl">
-    <a href="#/album/add">add</a>
+    <a href="#/album/add" class="btn btn-default2" title="Agregar Artista">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
     <div ng-if="filteredAlbums.length">
         <table class="table">
             <thead>
@@ -21,13 +23,9 @@
             </tr>
             </thead>
         </table>
-        <uib-pagination total-items="totalItems" items-per-page="itemsPerPage"
+        <uib-pagination ng-show="totalItems > 10" total-items="totalItems" items-per-page="itemsPerPage"
                     ng-model="currentPage" ng-change="pageChanged()"></uib-pagination>
-        <p>
-            Total items: [[totalItems]]<br />
-            Items per page: [[itemsPerPage]]<br />
-            Current Page: [[currentPage]]
-        </p>
+
     </div>
     <div ng-if="filteredAlbums.length == 0" class="well">
        Aun no existen Albunes registrados

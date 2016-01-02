@@ -41,7 +41,7 @@ class ArtistController extends Controller
             $this->validate($request, Artist::$rules);
             $input = $request->all();
             $artist = new Artist($input);
-            $roles = Roles::whereIn('id', $input['roles'])->get();
+            $roles = Roles::whereIn('id', $input['rol'])->get();
             $artist->save();
             $artist->roles()->saveMany($roles);
             return response()->json(['status' => 'success']);
@@ -66,7 +66,7 @@ class ArtistController extends Controller
             $this->validate($request, Artist::$rules);
             $input = $request->all();
             $artists->name = $input['name'];
-            $roles = Roles::whereIn('id', $input['roles'])->get();
+            $roles = Roles::whereIn('id', $input['rol'])->get();
             $artists->save();
             $artists->roles()->saveMany($roles);
             return response()->json(['status' => 'success']);

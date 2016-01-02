@@ -24,6 +24,21 @@ class Roles extends Model
      */
     public $timestamps = false;
 
+    /**
+     * Fillable fields
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'rol',
+    ];
+
+    /**
+     * validation rules
+     * @var array
+     */
+    public static $rules = ['rol' => 'required'];
+
     public function artist()
     {
         return $this->belongsToMany('App\Model\Artist');

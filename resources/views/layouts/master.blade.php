@@ -36,6 +36,7 @@
                   <ul class="nav navbar-nav">
                     <li class="active"><a href="#/album">Album <span class="sr-only">(current)</span></a></li>
                     <li><a href="#/artistas">Artistas</a></li>
+                    <li><a href="#/roles">Roles</a></li>
                   </ul>
                 </div><!-- /.navbar-collapse -->
               </div><!-- /.container-fluid -->

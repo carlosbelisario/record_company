@@ -1,0 +1,10 @@
+        <div class="form-group">
+            <label>Rol</label>
+            <input type="text" ng-model="role.rol" name="rol" required class="form-control" />
+            <div ng-messages="form.rol.$error" style="color:maroon" role="alert" ng-if="form.rol.$touched">
+                <div ng-message="required">El campo Rol es obligatorio</div>
+            </div>
+            <div ng-repeat="error in error.rol" ng-ig="error.rol != undefined">
+                <div style="color:maroon" role="alert">[[ error ]]</div>
+            </div>
+        </div>

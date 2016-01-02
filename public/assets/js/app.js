@@ -32,6 +32,15 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngMessages', 'ui.bootstrap', 'n
             }).when('/artist/detail/:id', {
                 templateUrl: '../app/partials/artist/details.html',
                 controller: 'ArtistDetailCtrl'
+            }).when('/roles', {
+                templateUrl: '../app/partials/roles/list.html',
+                controller: 'RolestListCtrl'
+            }).when('/roles/add', {
+                templateUrl: '../app/partials/roles/add.html',
+                controller: 'RolesAddCtrl'
+            }).when('/roles/edit/:id', {
+                templateUrl: '../app/partials/roles/edit.html',
+                controller: 'RolesEditCtrl'
             }).otherwise({
                 redirectTo: '/album'
             });
@@ -304,7 +313,7 @@ myApp.controller('ArtistAddCtrl', ['$scope', '$rootScope', '$http', '$location',
                     console.log(data);
                     if (data.status == 'success') {
                         $scope.flash.set({type:'success', 'message':'Album agregado correctamente'});
-                        $location.path('/artist');
+                        $location.path('/artistas');
                     } else if (data.status == 'validation_error') {
                         $scope.error = data.messages;
                     }
@@ -391,6 +400,110 @@ myApp.controller('ArtistDetailCtrl', ['$scope', '$http', '$routeParams', functio
     });
 }]);
 
+myApp.controller('RolestListCtrl', ['$scope', '$rootScope', '$uibModal', 'flash', 'listRolesFactory',
+    function($scope, $rootScope, $uibModal, flash, listRolesFactory) {
+        $scope.roles = listRolesFactory.query();
+        $rootScope.flash = flash;
+
+        $scope.itemsPerPage = 10
+        $scope.currentPage = 1;
+        $scope.pageCount = function () {
+            return Math.ceil($scope.roles.length / $scope.itemsPerPage);
+        };
+        $scope.roles.$promise.then(function () {
+            $scope.totalItems = $scope.roles.length;
+            $scope.$watch('currentPage + itemsPerPage', function() {
+                var begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
+                    end = begin + $scope.itemsPerPage;
+                $scope.filteredRoles = $scope.roles.slice(begin, end);
+            });
+        });
+
+        //modal
+        $scope.open = function (r) {
+            $scope.r = r;
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'myModalContent.html',
+                controller: 'ModalRoleInstanceCtrl',
+                size: 'sm',
+                resolve: {
+                    role: function () {
+                        return $scope.r;
+                    }
+                }
+            });
+        }
+
+    }]);
+
+myApp.controller('RolesAddCtrl', ['$scope', '$rootScope', '$http', '$location', 'flash',
+    function($scope, $rootScope, $http, $location, flash) {
+        $scope.role = {}
+        $rootScope.flash = flash;
+
+        $scope.add = function(role) {
+            $http.post(
+                laroute.url('roles/create', []),
+                role
+            ).success(function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        $scope.flash.set({type:'success', 'message':'Album agregado correctamente'});
+                        $location.path('/roles');
+                    } else if (data.status == 'validation_error') {
+                        $scope.error = data.messages;
+                    }
+                }).error(function(error) {
+                    console.log(error);
+                });
+        }
+    }]);
+
+myApp.controller('RolesEditCtrl', ['$scope', '$rootScope', '$http', '$routeParams', '$location', 'flash',
+    function($scope, $rootScope, $http, $routeParams, $location, flash) {
+        $rootScope.flash = flash;
+        $http.get(laroute.url('roles/detail', [$routeParams.id])).success(function(data) {
+            $scope.role = data;
+        });
+
+        $scope.edit = function(role) {
+            $http.put(
+                laroute.url('roles/edit', [$routeParams.id]),
+                role
+            ).success(function(data) {
+                console.log(data);
+                if (data.status == 'success') {
+                    $scope.flash.set({type:'success', 'message':'Album editado correctamente'});
+                    $location.path('/roles');
+                } else if (data.status == 'validation_error') {
+                    $scope.error = data.messages;
+                }
+            }).error(function(error) {
+                console.log(error);
+            });
+        }
+
+        //add multiple roles
+        $scope.addNewRole = function() {
+            var newItemNo = $scope.roles.length+1;
+            $scope.roles.push({'id':'choice'+newItemNo});
+            $scope.allowDelete = true;
+        };
+
+        $scope.removeRole = function() {
+            var lastItem = $scope.roles.length-1;
+            if (lastItem == 1) {
+                $scope.allowDelete = false;
+            }
+            $scope.roles.splice(lastItem);
+            $http.get(laroute.url('artists/role/delete', [$routeParams.id, lastItem])).success(function(data) {
+
+            });
+        };
+    }
+]);
+
 //modals
 myApp.controller('ModalAlbumInstanceCtrl', function ($scope, $http, $route, $uibModalInstance, album) {
 
@@ -419,6 +532,21 @@ myApp.controller('ModalArtistInstanceCtrl', function ($scope, $http, $route, $ui
         $uibModalInstance.dismiss('cancel');
     };
 });
+
+myApp.controller('ModalRoleInstanceCtrl', function ($scope, $http, $route, $uibModalInstance, role) {
+    $scope.role = role;
+    $scope.delete = function (id) {
+        $http.delete(laroute.url('roles/delete', [id])).success(function(data) {
+            $route.reload()
+            $uibModalInstance.dismiss('cancel');
+        });
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+
 
 //factories
 myApp.factory("flash", function($rootScope) {

@@ -1,0 +1,9 @@
+<div ng-controller="RolesEditCtrl">
+    <h3>Editar Artista</h3>
+    <div class="row well">
+        <form novalidate class="simple-form" name="form">
+            <ng-include src="'../app/partials/roles/form.html'"></ng-include>
+            <input type="submit" ng-click="edit(role)" class="btn btn-primary" value="Guardar" ng-disabled="form.name.$invalid" />
+        </form>
+    </div>
+</div>

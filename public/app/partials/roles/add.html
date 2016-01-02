@@ -1,0 +1,9 @@
+<div ng-controller="RolesAddCtrl">
+    <h3>Nuevo Rol</h3>
+    <div class="row well">
+        <form novalidate class="simple-form" name="form">
+            <ng-include src="'../app/partials/roles/form.html'"></ng-include>
+            <input type="submit" ng-click="add(role)" class="btn btn-primary" value="Guardar" ng-disabled="form.rol.$invalid" />
+        </form>
+    </div>
+</div>

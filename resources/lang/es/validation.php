@@ -109,6 +109,9 @@ return [
         'title' => 'Título',
         'published' => 'Fecha de Publicación',
         'author' => 'Artista',
+        'rol' => 'Rol',
+        'name' => 'Nombre',
+
     ],
 
 ];

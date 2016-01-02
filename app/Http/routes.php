@@ -54,6 +54,15 @@ Route::get('/artists/role/delete/{id}/{role}', ['as' => 'artists_role_delelete',
 
 Route::get('/roles/list', ['as' => 'roles_list', 'uses' => 'RolesController@rolesList']);
 
+Route::post('/roles/create', ['as' => 'roles_create', 'uses' => 'RolesController@add']);
+
+Route::put('/roles/edit/{id}', ['as' => 'roles_edit', 'uses' => 'RolesController@update']);
+
+Route::delete('/roles/delete/{id}', ['as' => 'roles_delete', 'uses' => 'RolesController@delete']);
+
+Route::get('/roles/detail/{id}', ['as' => 'roles_detail', 'uses' => 'RolesController@detail']);
+
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
