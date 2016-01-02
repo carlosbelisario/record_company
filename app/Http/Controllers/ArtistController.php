@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Model\Artist;
 use App\Model\Roles;
 use App\Model\Album;
+use Illuminate\Foundation\Validation\ValidationException;
 
 /**
  * Class ArtistController
@@ -45,6 +46,8 @@ class ArtistController extends Controller
             $artist->save();
             $artist->roles()->saveMany($roles);
             return response()->json(['status' => 'success']);
+        } catch(ValidationException $e) {
+            return response()->json(['status' => 'validation_error', 'messages' => $e->validator->errors()]);
         } catch(ValidationException $e) {
             return response()->json(['status' => 'validation_error', 'messages' => $e->validator->errors()]);
         }
