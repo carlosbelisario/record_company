@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RolesTest extends TestCase
 {
+    use DatabaseMigrations;
+
     /**
      * test list
      *
@@ -44,7 +46,8 @@ class RolesTest extends TestCase
      */
     public function testEditSuccess()
     {
-        $this->put('/roles/edit/1', $this->getFormData())->seeJson([
+        $this->factoryRole();
+        $this->put('/roles/edit/2', $this->getFormData())->seeJson([
                 'status' => 'success'
         ]);
     }
@@ -65,16 +68,18 @@ class RolesTest extends TestCase
      */
     public function testEditInvalid()
     {
+        $this->factoryRole();
         $expectedErrors = new \stdClass();
-        $expectedErrors->name[] = 'El campo Título es obligatorio';
-        $this->put('/roles/edit/1', $this->getFormDataIvalid())->seeJson([
+        $expectedErrors->rol[] = 'El campo Rol es obligatorio';
+        $this->put('/roles/edit/2', $this->getFormDataIvalid())->seeJson([
             'status' => 'validation_error',
         ]);
     }
 
     public function testDetail()
     {
-        $response = $this->call('GET', '/roles/detail/1');
+        $this->factoryRole();
+        $response = $this->call('GET', '/roles/detail/2');
         $data = $this->parseJson($response);
         $this->assertObjectHasAttribute('id', $data);
         $this->assertObjectHasAttribute('rol', $data);
@@ -106,6 +111,13 @@ class RolesTest extends TestCase
     protected function getFormDataIvalid()
     {
         return ['rol' => ''];
+    }
+
+    protected function factoryRole()
+    {
+        $role = factory(App\Model\Roles::class, 2)
+            ->create()
+        ;
     }
 
 }

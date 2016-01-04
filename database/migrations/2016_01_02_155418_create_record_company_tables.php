@@ -50,9 +50,10 @@ class CreateRecordCompanyTables extends Migration
      */
     public function down()
     {
-        Schema::drop('albums');
-        Schema::drop('artists');
         Schema::drop('album_artist');
         Schema::drop('artist_roles');
+        Schema::drop('albums');
+        Schema::drop('artists');
+        Schema::drop('roles');
     }
 }

@@ -19,3 +19,24 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Model\Album::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->name,
+        'published' => $faker->date('Y-m-d'),
+    ];
+});
+
+$factory->define(App\Model\Artist::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+$factory->define(App\Model\Roles::class, function (Faker\Generator $faker) {
+    return [
+        'rol' => $faker->name,
+    ];
+});
+
+

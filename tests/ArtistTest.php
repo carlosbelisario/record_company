@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ArtistTest extends TestCase
 {
+    use DatabaseMigrations;
+
     /**
      * test list
      *
@@ -42,7 +44,8 @@ class ArtistTest extends TestCase
      */
     public function testEditSuccess()
     {
-        $this->put('/artists/edit/1', $this->getFormData())->seeJson([
+        $this->factoryArtist();
+        $this->put('/artists/edit/2', $this->getFormData())->seeJson([
                 'status' => 'success'
         ]);
     }
@@ -63,18 +66,20 @@ class ArtistTest extends TestCase
      */
     public function testEditInvalid()
     {
+        $this->factoryArtist();
         $expectedErrors = new \stdClass();
         $expectedErrors->title[] = 'El campo Título es obligatorio';
         $expectedErrors->published[] = 'El campo Fecha de Publicación es obligatorio';
         $expectedErrors->author[] = 'El campo Artista es obligatorio';
-        $this->put('/artists/edit/1', $this->getFormDataIvalid())->seeJson([
+        $this->put('/artists/edit/2', $this->getFormDataIvalid())->seeJson([
             'status' => 'validation_error',
         ]);
     }
 
     public function testDetail()
     {
-        $response = $this->call('GET', '/artists/detail/1');
+        $this->factoryArtist();
+        $response = $this->call('GET', '/artists/detail/2');
         $data = $this->parseJson($response);
         $this->assertObjectHasAttribute('id', $data);
         $this->assertObjectHasAttribute('name', $data);
@@ -99,6 +104,16 @@ class ArtistTest extends TestCase
     protected function getFormDataIvalid()
     {
         return ['name' => '', 'rol' => ''];
+    }
+
+    protected function factoryArtist()
+    {
+        $artist = factory(App\Model\Artist::class, 2)
+            ->create()
+            ->each(function($a) {
+                $a->roles()->save(factory(App\Model\Roles::class)->make());
+            })
+        ;
     }
 
 }

@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AlbumTest extends TestCase
 {
+    use DatabaseMigrations;
+
     /**
      * test list
      *
@@ -46,6 +48,7 @@ class AlbumTest extends TestCase
      */
     public function testEditSuccess()
     {
+        $this->factoryAlbum();
         $this->put('/albums/edit/2', $this->getFormData())->seeJson([
                 'status' => 'success'
         ]);
@@ -67,6 +70,7 @@ class AlbumTest extends TestCase
      */
     public function testEditInvalid()
     {
+        $this->factoryAlbum();
         $expectedErrors = new \stdClass();
         $expectedErrors->title[] = 'El campo Título es obligatorio';
         $expectedErrors->published[] = 'El campo Fecha de Publicación es obligatorio';
@@ -78,6 +82,7 @@ class AlbumTest extends TestCase
 
     public function testDetail()
     {
+        $this->factoryAlbum();
         $response = $this->call('GET', '/albums/detail/2');
         $data = $this->parseJson($response);
         $this->assertObjectHasAttribute('id', $data);
@@ -112,6 +117,16 @@ class AlbumTest extends TestCase
     protected function getFormDataIvalid()
     {
         return ['title' => '', 'published' => '', 'author' => ''];
+    }
+
+    protected function factoryAlbum()
+    {
+        $album = factory(App\Model\Album::class, 2)
+            ->create()
+            ->each(function($a) {
+                $a->artist()->save(factory(App\Model\Artist::class)->make());
+            })
+        ;
     }
 
 }
